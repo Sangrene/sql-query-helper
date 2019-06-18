@@ -10,10 +10,10 @@ describe("Test queries format with default sql escape", () => {
       fields: {
         STRING_VAL: "MY_VALUE",
         NUMBER_VAL: 1,
-        DATE_VAL: new Date(1560866598000)
+        DATE_VAL: new Date(2019, 5, 18, 19, 50)
       }
     });
-    assert.strictEqual(query, "insert into MY_TABLE ( STRING_VAL, NUMBER_VAL, DATE_VAL ) values ( 'MY_VALUE', 1, '2019-06-18 16:03:18.000' )");
+    assert.strictEqual(query, "insert into MY_TABLE ( STRING_VAL, NUMBER_VAL, DATE_VAL ) values ( 'MY_VALUE', 1, '2019-06-18 19:50:00.000' )");
   });
 
   it("Should format UPDATE query properly with default formatter", () => {

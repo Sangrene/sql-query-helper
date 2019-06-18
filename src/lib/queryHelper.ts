@@ -10,7 +10,7 @@ const chainKeys = (formatter: IFormatter, keys: Array<string>) => {
   return keys.reduce((sql, key) => `${sql}, ${key}`, "").slice(2);
 }
 
-const insert = (formatter: IFormatter = escape) => {
+const insert = (formatter: IFormatter) => {
   return ({table, fields} : {table: string, fields: IFields}) => {
     const {keys, values} = Object.keys(fields).reduce((sql, key) => ({
       keys: `${sql.keys} ${key},`,
@@ -21,7 +21,7 @@ const insert = (formatter: IFormatter = escape) => {
 }
 
 
-const update = (formatter: IFormatter = escape) => {
+const update = (formatter: IFormatter) => {
   return ({table, fields, where: whereFields} : {table: string, fields: IFields, where: IFields}) => {
     const updatedFields = chainKeyEqualsValue(formatter, fields);
     const where = chainKeyEqualsValue(formatter, whereFields);
@@ -29,7 +29,7 @@ const update = (formatter: IFormatter = escape) => {
   }
 }
 
-const select = (formatter: IFormatter = escape) => {
+const select = (formatter: IFormatter) => {
   return ({table, fields, where: whereFields} : {table: string, fields?: Array<string>, where: IFields}) => {
     const selectedFields = fields ? chainKeys(formatter, fields) : "*";
     const where = chainKeyEqualsValue(formatter, whereFields);
@@ -37,7 +37,7 @@ const select = (formatter: IFormatter = escape) => {
   }
 }
 
-const _delete = (formatter: IFormatter = escape) => {
+const _delete = (formatter: IFormatter) => {
   return({table, where: whereFields} : {table: string, where: IFields}) => {
     return `delete from ${table} where ${chainKeyEqualsValue(formatter, whereFields)}`;
   }
