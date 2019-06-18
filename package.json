@@ -1,0 +1,23 @@
+{
+  "name": "sql-query-helper",
+  "version": "1.0.0",
+  "description": "Help build sql queries in an elegant way.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha -r ts-node/register src/**/*.test.ts "
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
+    "@types/sqlstring": "^2.2.1",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "sqlstring": "^2.3.1"
+  }
+}
