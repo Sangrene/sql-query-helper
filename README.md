@@ -3,6 +3,7 @@ Helper to write SQL queries efficiently. Supports Typescript.
 
 [![Coverage Status](https://coveralls.io/repos/github/Sangrene/sql-query-helper/badge.svg?branch=master)](https://coveralls.io/github/Sangrene/sql-query-helper?branch=master)
 [![Build Status](https://travis-ci.org/Sangrene/sql-query-helper.svg?branch=master)](https://travis-ci.org/Sangrene/sql-query-helper)
+[![npm version](https://badge.fury.io/js/sql-query-helper.svg)](https://badge.fury.io/js/sql-query-helper)
 
 # Installation
 `npm i -S sql-query-helper`
