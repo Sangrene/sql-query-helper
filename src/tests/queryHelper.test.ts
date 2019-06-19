@@ -1,6 +1,37 @@
 import queryHelper from "..";
-import { assert } from "chai";
+import { chainKeyEqualsValue, chainKeys } from "../lib/queryHelper"
+import chai, {expect} from "chai";
 import 'mocha';
+
+describe("Test helper object", () => {
+  it("Should contains select, update, insert, delete", () => {
+    const helper = queryHelper();
+    expect(helper).to.exist;
+    expect(helper).to.have.property("select");
+    expect(helper).to.have.property("update");
+    expect(helper).to.have.property("insert");
+    expect(helper).to.have.property("delete");
+  });
+  
+});
+
+describe("Test formatting keys and values fields", () => {
+  it("Should format fields KEY = VALUE, KEY = VALUE ...", () => {
+    const chain = chainKeyEqualsValue({
+      fields : {
+        NAME: "name",
+        NUMBER: 1,
+        DATE: new Date(2019, 5, 18, 19, 50)
+      }
+    });
+    expect(chain).to.be.equal("NAME = 'name', NUMBER = 1, DATE = '2019-06-18 19:50:00.000'")
+  })
+
+  it("Should format keys (for SELECT) like KEY1, KEY2, KEY3 ...", () => {
+    const chain = chainKeys(["ID", "NUMBER", "DATE"]);
+    expect(chain).to.be.equal("ID, NUMBER, DATE");
+  })
+})
 
 describe("Test queries format with default sql escape", () => {
   const helper = queryHelper();
@@ -13,7 +44,7 @@ describe("Test queries format with default sql escape", () => {
         DATE_VAL: new Date(2019, 5, 18, 19, 50)
       }
     });
-    assert.strictEqual(query, "insert into MY_TABLE ( STRING_VAL, NUMBER_VAL, DATE_VAL ) values ( 'MY_VALUE', 1, '2019-06-18 19:50:00.000' )");
+    expect(query).to.be.equal("insert into MY_TABLE ( STRING_VAL, NUMBER_VAL, DATE_VAL ) values ( 'MY_VALUE', 1, '2019-06-18 19:50:00.000' )")
   });
 
   it("Should format UPDATE query properly with default formatter", () => {
@@ -27,7 +58,7 @@ describe("Test queries format with default sql escape", () => {
         ID: 1
       }
     });
-    assert.strictEqual(query, "update MY_TABLE set STRING_UPDATED = 'MY_STRING', NUMBER_UPDATED = 1 where ID = 1");
+    expect(query).to.be.equal("update MY_TABLE set STRING_UPDATED = 'MY_STRING', NUMBER_UPDATED = 1 where ID = 1");
   });
 
   it("Should format SELECT query properly with default formatter selecting all fields", () => {
@@ -37,7 +68,7 @@ describe("Test queries format with default sql escape", () => {
         ID: 1
       }
     });
-    assert.strictEqual(query, "select * from MY_TABLE where ID = 1");
+    expect(query).to.be.equal("select * from MY_TABLE where ID = 1");
   });
 
   it("Should format SELECT query properly with default formatter selecting specific fields", () => {
@@ -48,7 +79,7 @@ describe("Test queries format with default sql escape", () => {
         ID: 1
       }
     })
-    assert.strictEqual(query, "select ID, FIRST_NAME, LAST_NAME from MY_TABLE where ID = 1");
+    expect(query).to.be.equal("select ID, FIRST_NAME, LAST_NAME from MY_TABLE where ID = 1")
   });
 
   it("Should format DELETE query properly with default formatter", () => {
@@ -58,7 +89,7 @@ describe("Test queries format with default sql escape", () => {
         ID: 1
       }
     });
-    assert.strictEqual(query, "delete from MY_TABLE where ID = 1");
+    expect(query).to.be.equal("delete from MY_TABLE where ID = 1");
   });
 
 });

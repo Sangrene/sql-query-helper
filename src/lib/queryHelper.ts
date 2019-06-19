@@ -2,11 +2,11 @@ import { escape } from "sqlstring";
 import { closeKeysOrValuesRequest } from "./stringUtils"
 import { IFormatter, IFields } from "./interfaces";
 
-const chainKeyEqualsValue = (formatter: IFormatter, fields: IFields) => {
+export const chainKeyEqualsValue = ({formatter = escape, fields}: {formatter?: IFormatter, fields: IFields}) => {
   return Object.keys(fields).reduce((sql, key) => `${sql}, ${key} = ${formatter(fields[key])}`, "").slice(2);
 }
 
-const chainKeys = (formatter: IFormatter, keys: Array<string>) => {
+export const chainKeys = (keys: Array<string>) => {
   return keys.reduce((sql, key) => `${sql}, ${key}`, "").slice(2);
 }
 
@@ -23,23 +23,23 @@ const insert = (formatter: IFormatter) => {
 
 const update = (formatter: IFormatter) => {
   return ({table, fields, where: whereFields} : {table: string, fields: IFields, where: IFields}) => {
-    const updatedFields = chainKeyEqualsValue(formatter, fields);
-    const where = chainKeyEqualsValue(formatter, whereFields);
+    const updatedFields = chainKeyEqualsValue({formatter, fields});
+    const where = chainKeyEqualsValue({formatter, fields: whereFields});
     return `update ${table} set ${updatedFields} where ${where}`;
   }
 }
 
 const select = (formatter: IFormatter) => {
   return ({table, fields, where: whereFields} : {table: string, fields?: Array<string>, where: IFields}) => {
-    const selectedFields = fields ? chainKeys(formatter, fields) : "*";
-    const where = chainKeyEqualsValue(formatter, whereFields);
+    const selectedFields = fields ? chainKeys(fields) : "*";
+    const where = chainKeyEqualsValue({formatter, fields: whereFields});
     return `select ${selectedFields} from ${table} where ${where}`;
   }
 }
 
 const _delete = (formatter: IFormatter) => {
   return({table, where: whereFields} : {table: string, where: IFields}) => {
-    return `delete from ${table} where ${chainKeyEqualsValue(formatter, whereFields)}`;
+    return `delete from ${table} where ${chainKeyEqualsValue({formatter, fields: whereFields})}`;
   }
 }
 
