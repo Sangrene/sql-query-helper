@@ -1,22 +1,15 @@
 import { escape } from "sqlstring";
-import { closeKeysOrValuesRequest } from "./stringUtils"
+import { closeKeysOrValueParenthesis, chainKeyEqualsValue, chainKeys } from "./stringUtils"
 import { IFormatter, IFields } from "./interfaces";
 
-export const chainKeyEqualsValue = ({formatter = escape, fields}: {formatter?: IFormatter, fields: IFields}) => {
-  return Object.keys(fields).reduce((sql, key) => `${sql}, ${key} = ${formatter(fields[key])}`, "").slice(2);
-}
-
-export const chainKeys = (keys: Array<string>) => {
-  return keys.reduce((sql, key) => `${sql}, ${key}`, "").slice(2);
-}
 
 const insert = (formatter: IFormatter) => {
   return ({table, fields} : {table: string, fields: IFields}) => {
     const {keys, values} = Object.keys(fields).reduce((sql, key) => ({
       keys: `${sql.keys} ${key},`,
       values: `${sql.values} ${formatter(fields[key])},`
-    }), {keys: "(", values: "("});
-    return `insert into ${table} ${closeKeysOrValuesRequest(keys)} values ${closeKeysOrValuesRequest(values)}`;
+    }), {keys: "", values: ""});
+    return `insert into ${table} ${closeKeysOrValueParenthesis(keys)} values ${closeKeysOrValueParenthesis(values)}`;
   }
 }
 

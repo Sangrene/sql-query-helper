@@ -1,5 +1,4 @@
 import queryHelper from "..";
-import { chainKeyEqualsValue, chainKeys } from "../lib/queryHelper"
 import chai, {expect} from "chai";
 import 'mocha';
 
@@ -14,24 +13,6 @@ describe("Test helper object", () => {
   });
   
 });
-
-describe("Test formatting keys and values fields", () => {
-  it("Should format fields KEY = VALUE, KEY = VALUE ...", () => {
-    const chain = chainKeyEqualsValue({
-      fields : {
-        NAME: "name",
-        NUMBER: 1,
-        DATE: new Date(2019, 5, 18, 19, 50)
-      }
-    });
-    expect(chain).to.be.equal("NAME = 'name', NUMBER = 1, DATE = '2019-06-18 19:50:00.000'")
-  })
-
-  it("Should format keys (for SELECT) like KEY1, KEY2, KEY3 ...", () => {
-    const chain = chainKeys(["ID", "NUMBER", "DATE"]);
-    expect(chain).to.be.equal("ID, NUMBER, DATE");
-  })
-})
 
 describe("Test queries format with default sql escape", () => {
   const helper = queryHelper();
