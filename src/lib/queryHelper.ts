@@ -26,7 +26,7 @@ const select = (formatter: IFormatter) => {
   return ({table, fields, where: whereFields, limit} : {table: string, fields?: Array<string>, where: IFields, limit?: number}) => {
     const selectedFields = fields ? chainKeys(fields) : "*";
     const where = chainKeyEqualsValue({formatter, fields: whereFields});
-    const limitClause = limit ? ` LIMIT = ${limit}` : "";
+    const limitClause = limit ? ` LIMIT ${limit}` : "";
     return `select ${selectedFields} from ${table} where ${where}${limitClause}`;
   }
 }

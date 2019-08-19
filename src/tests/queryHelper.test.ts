@@ -60,7 +60,7 @@ describe("Test queries format with default sql escape", () => {
       },
       limit: 10
     });
-    expect(query).to.be.equal("select * from MY_TABLE where ID = 1 LIMIT = 10");
+    expect(query).to.be.equal("select * from MY_TABLE where ID = 1 LIMIT 10");
   });
 
   it("Should format SELECT query properly with default formatter selecting specific fields", () => {
