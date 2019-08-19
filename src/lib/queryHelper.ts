@@ -23,10 +23,11 @@ const update = (formatter: IFormatter) => {
 }
 
 const select = (formatter: IFormatter) => {
-  return ({table, fields, where: whereFields} : {table: string, fields?: Array<string>, where: IFields}) => {
+  return ({table, fields, where: whereFields, limit} : {table: string, fields?: Array<string>, where: IFields, limit?: number}) => {
     const selectedFields = fields ? chainKeys(fields) : "*";
     const where = chainKeyEqualsValue({formatter, fields: whereFields});
-    return `select ${selectedFields} from ${table} where ${where}`;
+    const limitClause = limit ? ` LIMIT = ${limit}` : "";
+    return `select ${selectedFields} from ${table} where ${where}${limitClause}`;
   }
 }
 
